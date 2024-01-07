@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Pengaturan metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- Menambahkan ikon pada tab browser -->
+    <link rel="icon" href="/img/Logo_Sun.png">
+    <!-- Menambahkan stylesheet eksternal -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Memasukkan file header -->
+    {{>header}}
+    <!-- Bagian Utama Halaman -->
+    <div class="main-content" id="project-content">
+
+        <!-- Paragraf untuk teks proyek dengan efek animasi AOS -->
+        <p class="project-text" data-aos="fade-up" data-aos-offset="100">Gunakan website ini untuk menemukan informasi lagu!</p>
+
+        <!-- Formulir pencarian judul lagu -->
+        <form id="searchForm" data-aos="fade-up" data-aos-offset="100">
+            <input id="songInput" class="search-input" placeholder="Masukkan judul lagu">
+            <button id="searchButton" class="search-button" data-aos="zoom-in" data-aos-anchor="data-aos-anchor"
+                data-aos-offset="100">Cari Informasi Lagu</button>
+        </form>
+
+        <!-- Paragraf dan elemen lain untuk menampilkan informasi lagu -->
+        <div id="song-info" class="song-text" data-aos="fade-up" data-aos-offset="100">
+            <h2 id="song-title"></h2>
+        </div>
+
+        <!-- Membuat kontainer untuk hasil pencarian lagu -->
+        <div id="search-results"></div>
+
+        <!-- Playlist Section -->
+        <div id="playlist-section">
+            <h2>Your Playlist</h2>
+            <ul id="playlist" class="playlist-items">
+                <!-- Playlist items will be dynamically added here -->
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Menambahkan script JavaScript -->
+    <script src="/js/app.js"></script>
+    <script>
+        // Menambahkan event listener untuk form submission
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const songInput = document.getElementById('songInput').value;
+
+            // Ganti YOUR_SPOTIFY_CLIENT_ID dan YOUR_SPOTIFY_CLIENT_SECRET dengan nilai yang sesuai
+            const clientId = 'a41d1f3274744fc5bb490e0d6f481a22';
+            const clientSecret = '0c79a6b0438b4c22a6c6916580a8245c';
+
+            // URL API Spotify untuk mendapatkan informasi lagu
+            const spotifyApiUrl = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(songInput) + '&type=track';
+
+            // Mendapatkan access token dari Spotify
+            fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'grant_type=client_credentials'
+            })
+                .then(response => response.json())
+                .then(tokenData => {
+                    const accessToken = tokenData.access_token;
+
+                    // Mengambil data lagu dari API Spotify
+                    fetch(spotifyApiUrl, {
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(songData => {
+                            const results = songData.tracks.items;
+
+                            if (results.length === 0) {
+                                document.getElementById('song-title').textContent = 'Lagu tidak ditemukan';
+                            } else {
+                                document.getElementById('song-title').textContent = 'Hasil Pencarian:';
+
+                                // Membuat elemen list untuk menampilkan beberapa hasil
+                                const resultList = document.createElement('ul');
+
+                                // Iterasi melalui hasil dan menambahkannya ke dalam list
+                                results.forEach(result => {
+                                    const listItem = document.createElement('li');
+                                    listItem.innerHTML = `
+                                        <p>Judul: ${result.name}</p>
+                                        <p>Artis: ${result.artists[0].name}</p>
+                                        <p>Album: ${result.album.name}</p>
+                                        <a href="${result.album.external_urls.spotify}" target="_blank">
+                                            <img src="${result.album.images[0].url}" alt="Album Cover">
+                                        </a>
+                                        <audio controls>
+                                            <source src="${result.preview_url}" type="audio/mpeg">
+                                            Your browser does not support the audio tag.
+                                        </audio>
+                                        <button class="addToPlaylistButton">Add to Playlist</button>
+                                    `;
+
+                                    // Menambahkan event listener untuk tombol "Add to Playlist" per lagu
+                                    const addToPlaylistButton = listItem.querySelector('.addToPlaylistButton');
+                                    addToPlaylistButton.addEventListener('click', function () {
+                                        addToPlaylist(result.name, result.artists[0].name, result.album.name, result.preview_url);
+                                    });
+
+                                    resultList.appendChild(listItem);
+                                });
+
+                                // Menambahkan list ke dalam dokumen
+                                document.getElementById('search-results').innerHTML = '';
+                                document.getElementById('search-results').appendChild(resultList);
+
+                                // Menampilkan tombol "Add to Playlist" jika lagu ditemukan
+                                document.querySelectorAll('.addToPlaylistButton').forEach(button => {
+                                    button.style.display = 'block';
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching song data:', error);
+                            document.getElementById('song-title').textContent = 'Terjadi kesalahan saat mengambil data lagu.';
+                        });
+                })
+                .catch(error => {
+                    console.error('Error fetching access token:', error);
+                    document.getElementById('song-title').textContent = 'Terjadi kesalahan saat mengambil token akses.';
+                });
+        });
+
+        // Fungsi untuk menambahkan lagu ke dalam playlist
+        function addToPlaylist(title, artist, album, previewUrl) {
+            // Mengecek apakah lagu sudah ada di playlist
+            const playlistItems = document.querySelectorAll('#playlist li');
+            const isSongInPlaylist = [...playlistItems].some(item => item.textContent.includes(title));
+
+            // Menambahkan lagu ke dalam playlist jika belum ada
+            if (!isSongInPlaylist) {
+                const playlist = document.getElementById('playlist');
+                const newPlaylistItem = document.createElement('li');
+                newPlaylistItem.innerHTML = `
+                    <p>Judul: ${title}</p>
+                    <p>Artis: ${artist}</p>
+                    <p>Album: ${album}</p>
+                    <audio controls>
+                        <source src="${previewUrl}" type="audio/mpeg">
+                        Your browser does not support the audio tag.
+                    </audio>
+                `;
+                playlist.appendChild(newPlaylistItem);
+
+                // Mengirim data lagu ke server untuk disimpan ke MongoDB
+                const formData = new FormData();
+                formData.append('playlistName', 'Your Playlist'); // Ganti dengan nama playlist yang sesuai
+                formData.append('songs', `${title} - ${artist}`);
+
+                fetch('/addplaylist', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error adding to playlist:', error));
+            } else {
+                alert('Lagu sudah ada di dalam playlist.');
+            }
+        }
+    </script>
+    <!-- Memasukkan file footer -->
+    {{>footer}}
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Pengaturan metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- Menambahkan ikon pada tab browser -->
+    <link rel="icon" href="/img/Logo_Sun.png">
+    <!-- Menambahkan stylesheet eksternal -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Memasukkan file header -->
+    {{>header}}
+    <!-- Bagian Utama Halaman -->
+    <div class="main-content" id="project-content">
+
+        <!-- Wrapper untuk Form Daftar -->
+        <div class="wrapper">
+            <!-- Halaman daftar -->
+            <div class="form-box register" style="display: block;">
+                <h1>Form Daftar</h1>
+                <form action="/signup" method="post">
+                    <!-- Input box untuk memasukkan Nama -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" name="name" required placeholder="Nama">
+                    </div>
+                    <!-- Input box untuk memasukkan Email -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                        <input type="email" name="email" required placeholder="Email">
+                    </div>
+                    <!-- Input box untuk memasukkan Password -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" name="password" required placeholder="Password">
+                    </div>
+                    <!-- Tombol untuk membuat akun -->
+                    <button type="submit" class="btn">Buat Akun</button>
+                    <!-- Bagian untuk login jika sudah memiliki akun -->
+                    <div class="login-register">
+                        <p>Sudah punya akun? <a href="/login" class="login-link"> Login </a></p>
+                    </div>
+                    <!-- Menampilkan pesan kesalahan jika terjadi error pada signup -->
+                    {{#if signupError}}
+                        <p class="error-message">{{signupError}}</p>
+                    {{/if}}
+                    <!-- Menampilkan pesan sukses jika registrasi berhasil -->
+                    {{#if signupSuccess}}
+                        <p class="success-message">{{signupSuccess}}</p>
+                        <!-- Script untuk mengarahkan otomatis ke halaman login setelah registrasi berhasil -->
+                        <script>
+                            setTimeout(function() {
+                                redirectToLogin();
+                            }, 2000); // Redirect setelah 2 detik (sesuaikan jika diperlukan)
+                        </script>
+                    {{/if}}
+                </form>
+            </div>
+        </div>
+
+        <!-- Script untuk mengarahkan otomatis ke halaman login -->
+        <script>
+            function redirectToLogin() {
+                window.location.href = '/login'; // Mengarahkan ke halaman login
+            }
+        </script>
+
+    </div>
+
+    <!-- Include file footer -->
+    {{> footer}}
+</body>
+</html>

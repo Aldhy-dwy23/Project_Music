@@ -1,0 +1,21 @@
+<!-- Bagian Header -->
+<header>
+  <!-- Menampilkan logo -->
+  <img src="/img/Icon_Spotify.png" alt="Home" class="logo-icon" />
+
+  <!-- Menampilkan judul halaman -->
+  <h1>{{title}}</h1>
+
+  <!-- Navigasi Menu -->
+  <nav>
+    <!-- Link menuju halaman Home -->
+    <a href="/"><img src="/img/Icon_Home.png" alt="Home" class="menu-icon" />Home</a>
+    <!-- Link menuju halaman Project -->
+    <a href="/project"><img src="/img/Icon_Project.png" alt="Project" class="menu-icon" /> Project</a>
+
+    <!-- Menampilkan link Playlist jika pengguna telah autentikasi -->
+    {{#if isAuthenticated}}
+      <a href="/logout"><img src="/img/Icon_Logout.png" alt="Logout" class="menu-icon" />Logout</a>
+    {{/if}}
+  </nav>
+</header>

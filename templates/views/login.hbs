@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Pengaturan metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- Menambahkan ikon pada tab browser -->
+    <link rel="icon" href="/img/Logo_Sun.png">
+    <!-- Menambahkan stylesheet eksternal -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Memasukkan file header -->
+    {{>header}}
+    <!-- Bagian Utama Halaman -->
+    <div class="main-content" id="project-content">
+
+        <!-- Wrapper untuk Form Login -->
+        <div class="wrapper">
+            <div class="form-box register" style="display: block;">
+                <form action="/login" method="post" onsubmit="return validateForm()">
+                    <h1>Login Form</h1>
+                    <!-- Input box untuk Nama atau Email -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" name="nameOrEmail" required placeholder="Name or Email">
+                    </div>
+                    <!-- Input box untuk Password -->
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" name="password" required placeholder="Password">
+                    </div>
+                    <!-- Tombol untuk melakukan login -->
+                    <button type="submit" class="btn">Login</button>
+
+                    <!-- Bagian untuk mendaftar jika belum memiliki akun -->
+                    <div class="login-register">
+                        <p>Don't have an account? <a href="/signup">Create a new account</a></p>
+                    </div>
+                </form>
+
+                <!-- Script JavaScript -->
+                <script>
+                    // Fungsi untuk validasi form sebelum pengiriman
+                    function validateForm() {
+                        var nameOrEmail = document.forms[0]["nameOrEmail"].value;
+                        var password = document.forms[0]["password"].value;
+
+                        // Memeriksa apakah kedua bidang telah diisi
+                        if (nameOrEmail === "" || password === "") {
+                            showErrorPopup("Please fill in both fields.");
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    // Fungsi untuk menampilkan popup kesalahan
+                    function showErrorPopup(message) {
+                        var errorPopup = document.getElementById("error-popup");
+                        var errorMessage = document.getElementById("error-message");
+                        errorMessage.innerHTML = message;
+                        errorPopup.style.display = "block";
+
+                        // Menutup popup setelah beberapa detik
+                        setTimeout(function() {
+                            errorPopup.style.display = "none";
+                        }, 1000);
+                    }
+
+                    // Fungsi untuk menampilkan popup login berhasil
+                    function showSuccessPopup() {
+                        var successPopup = document.getElementById("success-popup");
+                        successPopup.style.display = "block";
+
+                        // Menutup popup setelah beberapa detik
+                        setTimeout(function() {
+                            successPopup.style.display = "none";
+                        }, 3000);
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include file footer -->
+    {{> footer}}
+</body>
+</html>

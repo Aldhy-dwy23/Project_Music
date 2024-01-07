@@ -1,0 +1,155 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+/* Header Styling */
+.header {
+  background-color: #333;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #fff;
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #333;
+  padding: 15px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Common Styling for Main Content */
+.main-content {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Index Page Styling */
+#index-content {
+  background: linear-gradient(to bottom, #1a1a1a, #333);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+
+#index-content h2 {
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+#index-content p {
+  font-size: 18px;
+  color: #bbb;
+}
+
+#index-content a {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+#index-content img {
+  width: 50px;
+}
+
+/* 404 Page Styling */
+#error-content {
+  background: linear-gradient(to bottom, #d73e68, #ff5c3b);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+
+#error-content p {
+  font-size: 24px;
+  color: #fff;
+}
+
+/* Login and Signup Page Styling */
+#project-content {
+  background: linear-gradient(to bottom, #4e54c8, #8f94fb);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+
+.form-box {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.input-box {
+  margin-bottom: 20px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn {
+  background-color: #4e54c8;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-register {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.login-link {
+  color: #4e54c8;
+  text-decoration: none;
+}
+
+/* Popup Styling */
+#error-popup,
+#success-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.error-message,
+.success-message {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
